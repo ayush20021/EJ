@@ -1,0 +1,15 @@
+PrintWriter out = response.getWriter();
+        try{
+
+        out.println("<html>");
+         out.println("<head>");
+          out.println("<title>ServLet WelcomeSErvlet </title>");
+           out.println("</head>");
+            out.println("<body>");
+             out.println("<h1> Welcome to the world of Servlet</h1>");
+              out.println("</body>");
+               out.println("</html>");
+        }
+          finally{
+              out.close();
+          }
