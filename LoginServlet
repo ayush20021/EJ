@@ -1,0 +1,21 @@
+ PrintWriter out = response.getWriter();
+        out.println("<html> <head>");
+        out.println("<title> SErvlet LoginSErvlet </title></head>");
+        String uname = request.getParameter("txtID");
+        String upass = request.getParameter("txtPass");
+        if(uname.equals("admin")&& upass.equals("Servlet")){
+           RequestDispatcher rd = request.getRequestDispatcher("WelcomeServlet");
+           rd.forward(request,response);
+
+
+        }else{
+
+             out.println("<body bgcolor = red>");
+              out.println("<h1> Login Fail !!</h1>");
+              RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+              rd.include(request, response);
+              out.println("</body>");
+              out.println("</html>");
+
+
+        }
