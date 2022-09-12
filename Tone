@@ -1,0 +1,48 @@
+package counter.ejb;
+import javax.ejb.Singleton;
+@Singleton
+public class CounterBean {
+ private int hits = 1;
+ // Increment and return the number of hits
+ public int getHits() {
+ return hits++;
+ }
+}
+------------------------------------ Count.java ------------------------------------
+package mypack;
+import java.io.Serializable;
+import javax.ejb.EJB;
+import javax.enterprise.context.ConversationScoped;
+import javax.inject.Named;
+import counter.ejb.CounterBean;
+@Named("count")
+@ConversationScoped
+public class Count implements Serializable {
+ @EJB
+private CounterBean counterBean;
+ private int hitCount;
+ public Count() {
+ this.hitCount = 0;
+ }
+ public int getHitCount() {
+ hitCount = counterBean.getHits();
+ return hitCount;
+ }
+ public void setHitCount(int newHits) {
+ this.hitCount = newHits;
+ }
+}
+--------------------------------------------- HitCountPage.xhtml -----------------------
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+<title>Page Hit Counter Using Singleton Session Bean ~~~~ </title>
+</h:head>
+<h:body>
+<h1>Welcome to Hit Count Page</h1>
+ Page was hit #{count.hitCount} times
+</h:body>
+</html>
