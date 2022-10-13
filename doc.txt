@@ -1,6 +1,0 @@
-create table user
-(
-username varchar(20) primary key,
-password varchar(20),
-email varchar(20),
-country varchar(20));
