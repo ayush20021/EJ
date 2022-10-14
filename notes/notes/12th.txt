@@ -1,0 +1,77 @@
+aim: Develop simple EJB application to demonstrate Servlet Hit count using Singleton Session Beans.
+
+CounterBean.java
+package counter.ejb;
+import javax.ejb.Singleton;
+@Singleton
+public class CounterBean {
+private int hits = 1;
+// Increment and return the number of hits
+public int getHits() {
+return hits++;
+}
+}
+
+Count.java
+package mypack;
+import java.io.Serializable;
+import javax.ejb.EJB;
+import javax.enterprise.context.ConversationScoped;
+import javax.inject.Named;
+import counter.ejb.CounterBean;
+@Named("count")
+@ConversationScoped
+public class Count implements Serializable {
+@EJB
+private CounterBean counterBean;
+private int hitCount;
+public Count() {
+this.hitCount = 0;
+}
+public int getHitCount() {
+hitCount = counterBean.getHits();
+return hitCount;
+}
+public void setHitCount(int newHits) {
+this.hitCount = newHits;
+}
+}
+
+HitCountPage.xhtml
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+<title>Page Hit Counter Using Singleton Session Bean ~~~~ </title>
+</h:head>
+<h:body>
+<h1>Welcome to Hit Count Page</h1>
+Page was hit #{count.hitCount} times
+</h:body>
+</html>
+
+***********************************************************************************
+
+Singleton session bean:
+A singleton session bean is instantiated once per application and exists for the life cycle of the application
+Singleton session bean are designed for circumstances In which a single enterprise bean instance is shared across and concurrently accessed by clients.
+
+JSF-Java Server Faces.
+It is a server side component based user Interface framework. It provides well defined programming model and consists of rich API and tag libraries. The JSF API provides components of rich API and tag libraries. The JSF API provides components and helps to manage the states.
+
+Packages.
+import java.ejb.singleton : It is use to create an EJB singleton use the @ singleton annotation form the java.ejb.package.
+
+import java.io.serializable: It is a marker interface it does not have any methods and field. Thus classes implementing it do not have to implement any methods.
+
+import javax.enterprise.Context.ConversationScoped: It specifies that a bean is coversation scoped
+
+Import javax.inject.Named: It is a string based qualifier
+
+import converter.ejb. CounterBean: It is import package from CounterBean java page.
+
+Methods:
+getHits()-> to get the total number of document matching request
+count()-> it returns the counter of elements in the stream

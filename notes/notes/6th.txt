@@ -1,0 +1,127 @@
+aim: Create a servlet demonstrating the use of session creation and destruction. Also check whether the user has visited this page first time or has visited earlier also using sessions.
+
+index.html
+<html>
+<head><title>Session Demo</title></head>
+<form action="Page1" method="get" >
+Enter User ID <input type="text" name="txtName"><br>
+<input type="reset" ><input type="submit" >
+</form>
+</html>
+
+Page1.java
+// Repeat the code from Page2.java in Page3.java and Page4.java with relevant changes.
+
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+public class Page1 extends HttpServlet {
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+out.println("<html><head><title>Servlet Page1</title></head>");
+HttpSession hs = request.getSession(true);
+if(hs.isNew()){
+out.println("<body bgcolor=yellow>");
+String name = request.getParameter("txtName");
+hs.setAttribute("uname", name);
+hs.setAttribute("visit", "1");
+out.println("<h1>Welcome First Time</h1>");
+}
+else{
+out.println("<h1>Welcome Again</h1>");
+int visit = Integer.parseInt((String)hs.getAttribute("visit"))+1;
+out.println("<h1>You Visited "+visit+"Times</h1>");
+hs.setAttribute("visit", ""+visit);
+}
+out.println("<h1>Your Session ID "+hs.getId()+"</h1>");
+out.println("<h1>You Logged in at "+new java.util.Date(hs.getCreationTime())+"</h1>");
+out.println("<h1><a href=Page2>Click for Page 2 </a></h1>");
+out.println("<h1><a href=Page3>Click for Page 3 </a></h1>");
+out.println("<h1><a href=Page4>Click for Page 4 </a></h1>");
+out.println("<h1><a href=LogoutServlet>Click to Terminate Session </a></h1>");
+out.println("</body>");
+out.println("</html>");
+}
+}
+
+Page2.java
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+public class Page2 extends HttpServlet {
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+out.println("<html><head><title>Servlet Page2</title></head>");
+HttpSession hs = request.getSession(false);
+out.println("<h1>Welcome Again on Page No. 2</h1>");
+int visit = Integer.parseInt((String)hs.getAttribute("visit"))+1;
+out.println("<h1>You Visited "+visit+"Times</h1>");
+hs.setAttribute("visit", ""+visit);
+out.println("<h1>Your Session ID "+hs.getId()+"</h1>");
+out.println("<h1>You Logged in at "+new java.util.Date(hs.getCreationTime())+"</h1>");
+out.println("<h1><a href=Page1>Click for Page 1 </a></h1>");
+out.println("<h1><a href=Page3>Click for Page 3 </a></h1>");
+out.println("<h1><a href=Page4>Click for Page 4 </a></h1>");
+out.println("<h1><a href=LogoutServlet>Click for Terminate Session </a></h1>");
+out.println("</body>");
+out.println("</html>");
+}
+}
+
+LogoutServlet.java
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+public class LogoutServlet extends HttpServlet {
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+out.println("<html><head><title>Servlet LogoutServlet</title></head>");
+out.println("<body>");
+javax.servlet.http.HttpSession hs = request.getSession();
+if(hs != null) hs.invalidate();
+out.println("<h1>You are Logged out now........</h1>");
+out.println("</body>");
+out.println("</html>");
+}
+}
+
+***********************************************************************************
+Session: Session simply means a particular interval of time
+Session tracking is a way to maintain state(data) of the user It is also know as session management in servlet
+Htttp protocol is a solution so we need to maintain state using session tracking techniques Each time user requests to the server session treats the request as the new request. So we need to maintain the state of an user of to recognize to particular one
+
+Package:
+import javax.servlet.http.HTTP session->
+It provides a way to identify a user across more than one page request or visit to a website or to store info about user
+Java.util.Date()->
+It provides current and method deals with date and time.
+
+Methods:
+getsession()->It returns the current session associated with the request or if the request does not have a session create one.
+setAttribute()-> It sets the value of an attribute on the specified elements.
+getID()->IT is used to return the thread identifier.
+getcreationTime()->It returns the time when this session was created.
+
+
+
+

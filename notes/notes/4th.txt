@@ -1,0 +1,89 @@
+Aim: Using Request Dispatcher Interface create a Servlet which will validate the password entered by the user, if the user has entered "Servlet" as password, then he will be forwarded to Welcome Servlet else the user will stay on the index.html page and an error message will be displayed.
+
+Index.html :
+<html><head><title>Login Form</title></head>
+<form action="LoginServlet" >
+Enter User ID<input type="text" name="txtId"><br>
+Enter Password<input type="password" name="txtPass"><br>
+<input type="reset">
+<input type="submit" value=" Click to Login " >
+</form>
+</html>
+
+LoginServlet.java
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
+public class LoginServlet extends HttpServlet {
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+out.println("<html><head>");
+out.println("<title>Servlet LoginServlet</title></head>");
+String uname = request.getParameter("txtId");
+String upass = request.getParameter("txtPass");
+if(uname.equals("admin") && upass.equals("servlet")){
+RequestDispatcher rd = request.getRequestDispatcher("WelcomeServlet");
+rd.forward(request, response);
+}
+else{
+out.println("<body bgcolor=red >");
+out.println("<h1> Login Fail !!! </h1>");
+RequestDispatcher rd = request.getRequestDispatcher("index.html");
+rd.include(request, response);
+}
+out.println("</body>");
+out.println("</html>");
+}
+
+WelcomeServlet.java
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
+public class LoginServlet extends HttpServlet {
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+out.println("<html><head>");
+out.println("<title>Servlet LoginServlet</title></head>");
+String uname = request.getParameter("txtId");
+String upass = request.getParameter("txtPass");
+if(uname.equals("admin") && upass.equals("servlet")){
+RequestDispatcher rd = request.getRequestDispatcher("WelcomeServlet");
+rd.forward(request, response);
+}
+else{
+out.println("<body bgcolor=red >");
+out.println("<h1> Login Fail !!! </h1>");
+RequestDispatcher rd = request.getRequestDispatcher("index.html");
+rd.include(request, response);
+}
+out.println("</body>");
+out.println("</html>");
+} }
+
+***********************************************************************************
+
+Request Dispatcher:
+Request dispatcher interface provides the facility of dispatching the request to another resource it may be html, servlet or jsp. This interface can also be used to include the content of another resource also. It is one method of request dispatcher interface
+
+Package:
+import javax.servlet.Request Dispatcher:
+It defines an object that receives requests from the client and send them to any resource (such as a servlet, HTML file or JSP file on the server)
+
+Method:
+do Get() Method:
+request.get request dispatcher():
+the dispatcher is relative to the current HTTP request.

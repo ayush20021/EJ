@@ -1,0 +1,82 @@
+aim: Develop a simple JSP application to pass values from one page to another with validations.
+(Name-txt, age-txt, hobbies-checkbox, email-txt, gender-radio button).
+
+index.html
+<html><head><title>User Information Paage</title>
+</head>
+<body>
+<form action="Validate.jsp">
+Enter Your Name<input type="text" name="name" ><br>
+Enter Your Age<input type="text" name="age" ><br>
+Select Hobbies
+<input type="checkbox" name="hob" value="Singing">Singing
+<input type="checkbox" name="hob" value="Reading">Reading Books
+<input type="checkbox" name="hob" value="Football">Playing Football<br>
+Enter E-mail<input type="text" name="email" ><br>
+Select Gender
+<input type="radio" name="gender" value="male">Male
+<input type="radio" name="gender" value="female">Female
+<input type="radio" name="gender" value="other">Other<br>
+<input type="hidden" name="error" value="">
+<input type="submit" value="Submit Form">
+</form>
+</body>
+</html>
+
+Validate.jsp
+<%@page contentType="text/html" pageEncoding="UTF-8" import="mypack.*" %>
+<html><head><title>JSP Page</title></head>
+<body>
+<h1>Validation Page</h1>
+<jsp:useBean id="obj" scope="request"
+class="mypack.CheckerBean" >
+<jsp:setProperty name="obj" property="*"/>
+</jsp:useBean>
+<%if (obj.validate())
+{ %>
+<jsp:forward page="successful.jsp"/>
+<% }
+else {%>
+<jsp:include page="index.html"/>
+<%}%>
+<%=obj.getError() %>
+</body></html>
+
+CheckerBean.java
+package mypack;
+public class CheckerBean {
+private String name, age, hob, email, gender, error;
+public CheckerBean(){error="";}
+public void setName(String n){name=n;}
+public void setAge(String a){age=a;}
+public void setHob(String h){hob=h;}
+public void setEmail(String e){email=e;}
+public void setGender(String g){gender=g;}
+public void setError(String e){error=e;}
+public String getName(){return name;}
+public String getAge(){return age;}
+public String getHob(){return hob;}
+public String getEmail(){return email;}
+public String getGender(){return gender;}
+public String getError(){return error;}
+public boolean validate(){
+boolean res=true;
+if(name.trim().equals("")) {error+="<br>Enter First Name";res=false;}
+if(age.length() > 2 )
+{error+="<br>Age Invalid";res=false;}
+return res;
+}
+}
+
+***********************************************************************************
+
+JSP
+Bean:
+EJb is an acronym for Enterprise Java Bean. It is a specification provide by sun Microsystems to develop secured, robust and scalable distributed applications. To run EJB application you must need an application server (EJB container) such as Jboss, Glassfish, Weblogic, Websphere etc. It performs
+1. Life cycle Management 2.Security 3. Transaction management 4. Object pooling
+
+Methods getError():
+It is a subclass of Throwable that tells that something serious problem is existing and a reasonalble Java application should not try to catch that error
+
+Getter() and Setter():
+Getter and Setter are methods used for protect your data and make your code more secure getters returns the value it returns the value of data type int, string, double, float etc.

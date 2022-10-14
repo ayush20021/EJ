@@ -1,0 +1,54 @@
+Aim: Create a simple calculator application using servlet.
+
+
+index.html
+<html><head><title>Calculator App</title></head><body>
+<form action="CalculatorServlet" >
+Enter First Number <input type="text" name="txtN1" ><br>
+Enter Second Number <input type="text" name="txtN2" ><br>
+Select an Operation
+<input type="radio" name="opr" value="+">ADDTION
+<input type="radio" name="opr" value="-">SUBSTRACTION
+<input type="radio" name="opr" value="*">MULTIPLY
+<input type="radio" name="opr" value="/">DIVIDE <br>
+<input type="reset">
+<input type="submit" value="Calculate" >
+</form></body></html>
+
+CalculatorServlet.java -
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+public class CalculatorServlet extends HttpServlet {
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+out.println("<html><head><title>Servlet CalculatorServlet</title></head><body>");
+double n1 = Double.parseDouble(request.getParameter("txtN1"));
+double n2 = Double.parseDouble(request.getParameter("txtN2"));
+double result =0;
+String opr=request.getParameter("opr");
+if(opr.equals("+")) result=n1+n2; if(opr.equals("-")) result=n1-n2;
+if(opr.equals("*")) result=n1*n2; if(opr.equals("/")) result=n1/n2;
+out.println("<h1> Result = "+result); out.println("</body></html>");} }
+
+*********************************************************************//////////////
+Servlet:
+Servlet technology is used to create a web application
+servlet can be describe in many ways, depending on the context
+servlet is a technology which is used to create web applications
+servlet is an interface that must be implemented for creating any servlet
+servlet is a web component that is deployed on the server to create a dynamic web page etc.
+
+packages:
+import javax.servlet and import javax.servlet.http this two packages contain the classes and interfaces that are required to build servlets
+import javaio -> it will import all names spaces that fall under it
+
+method:
+doGet():
+the doGet() method in servlets is used to process the http get requests so basically the http get method should be used to get the data from server to the browser, Although in some requests, the GET method is to send data from the browser to the server also.

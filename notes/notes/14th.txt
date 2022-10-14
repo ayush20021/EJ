@@ -1,0 +1,117 @@
+Aim: Develop a Hibernate application to store Feedback of website Visitor in MySQL Database.
+
+
+MY SQL Database
+create database feedbackdb; create table GuestBook(
+vno int PRIMARY KEY AUTO_INCREMENT,
+vname varchar(50), msg varchar(100), mdate varchar(50)
+
+Index.html
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>ToDo, Supply a title</title></head>
+<body>
+<h1>Sign the guest book</h1>
+<form action="guestbookview.jsp" method="post"> Visitor Name:<input type="text" name="vname"> Message: <input type="text" name="msg">
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
+ 
+guestbookview.html
+<%@page contentType="text/html" pageEncoding="UTF-8" import="org.hibernate.SessionFactory,org.hibernate.cfg.Configuration,org.hibernate.Session, org.hibernate.Transaction,java.util.List,java.util.Iterator,myapp.guestbook" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%! SessionFactory s; org.hibernate.Session hs; List<guestbook>guestbook; %>
+<% s=new Configuration().configure().buildSessionFactory(); hs=s.openSession();
+Transaction tx=null; guestbook g=new guestbook(); try
+{ tx=hs.beginTransaction();
+String guest=request.getParameter("vname"); String message=request.getParameter("msg"); String messagedate=new java.util.Date().toString(); g.setVname(guest);
+g.setMsg(message); g.setMsgdate(messagedate); hs.save(g);
+tx.commit(); }
+ catch(Exception e)
+{ if(tx!=null) tx.rollback();
+throw e; }
+try{
+hs.beginTransaction(); guestbook=hs.createQuery("from guestbook").list();}
+catch(Exception e){
+throw e;} %>
+<html><head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+</head> <body> <h1>View the guest book</h1> 
+Click<a href="index.jsp">here</a>to sign the guestbook
+<% Iterator i=guestbook.iterator(); while(i.hasNext())
+{ guestbook gb=(guestbook)i.next(); %>
+<br>
+on<%= gb.getMsgdate()%><br>
+<b><%=gb.getVname()%>posted following message</b>
+<%=gb.getMsg()%><br>
+<% } %> </body></html>
+
+guestbook.java
+package myapp;
+/**
+*
+* @author student
+*/
+public class guestbook implements java.io.Serializable{
+private Integer vno; private String vname; private String msg; private String msgdate; public guestbook(){}
+public guestbook(Integer vno,String vname,String msg,String msgdate)
+{ this.vno=vno; this.vname=vname; this.msg=msg; this.msgdate=msgdate;}
+public String getMsg(){
+return msg;}
+public void setMsg(String msg){
+this.msg=msg;}
+public String getMsgdate(){
+return msgdate;}
+public void setMsgdate(String msgdate){
+this.msgdate=msgdate;}
+public String getVname(){
+return vname;}
+public void setVname(String vname){
+this.vname=vname;}
+public Integer getVno(){
+return vno;}
+public void setVno(Integer vno){
+this.vno=vno;}} 
+hibernate.hbm.xml
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="myapp.guestbook" table="guestbook">
+<id name="vno" type="java.lang.Integer">
+<column name="vno"></column>
+<generator class="identity"></generator>
+</id>
+<property name="vname" type="string">
+<column name="vname" length="50"></column>
+</property>
+<property name="msg" type="string">
+<column name="msg" length="100"></column>
+</property>
+<property name="msgdate" type="string">
+<column name="msgdate" length="50"></column>
+</property>
+</class>
+</hibernate-mapping>
+
+
+***********************************************************************************
+
+Hibernate:
+1.hibernate is a high performance object/relation presistance and query service which is licensed under the open source GNU lesser General public license and is free to download
+2.Hibernate not only takes care of the mapping from java classes to databse tables(and from java data types to sql data types) but also provides data query and retrieval facilitiies.
+
+MySQL Database:
+Pacakages:
+import javax.persistance.x;
+import org.hibernate.(fg.x; -> It represents an entire set of mappings of an application javas type to an sql database
+
+Methods
+Configuration()->It is responsible for specifying which login modules should be used for a particular application an in what order that login modules should be invoked build session factory()
+It gathers the meta data which is in the cfg object.
+Commit()-> It saves all the modifications made since the last commit
+opensession()->Always open a new session.

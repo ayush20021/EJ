@@ -1,0 +1,86 @@
+Aim: Create a registration servlet in Java using JDBC. Accept the details such as Username, Password, Email, and Country from the user using HTML Form and store the registration details in the database.
+
+
+
+
+
+
+
+MySql queries
+create database LoginDB;
+use LoginDB;
+create table user(username varchar(20) PRIMARY KEY, password varchar(20), email varchar(20),
+country varchar(20));
+insert into user values ('admin','admin','admin@admin.com','India');
+select * from user;
+
+
+
+
+
+
+
+
+Index.html -
+<html><head><title>Registration Page</title></head>
+<body>
+<form action="RegisterServlet" >
+<H1>Welcome to Registration page</H1>
+Enter User Name <input type="text" name="txtUid"><br>
+Enter Password <input type="password" name="txtPass"><br>
+Enter Email <input type="text" name="txtEmail" ><br>
+Enter Country <input type="text" name="txtCon" ><br>
+<input type="reset" ><input type="submit" value="REGISTER" >
+</form>
+</body></html>
+
+
+RegisterServlet.java -
+package mypack;
+import java.io.*;
+import java.sql.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class RegisterServlet extends HttpServlet {
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+String id = request.getParameter("txtUid");
+String ps = request.getParameter("txtPass");
+String em = request.getParameter("txtEmail");
+String co = request.getParameter("txtCon");
+try{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/logindb");
+PreparedStatement pst = con.prepareStatement("insert into user values(?,?,?,?)");
+pst.setString(1,id);
+pst.setString(2,ps);
+pst.setString(3,em);
+pst.setString(4,co);
+int row = pst.executeUpdate();
+out.println("<h1>"+row+ " Inserted Succesfullyyyyy");
+}catch(Exception e){out.println(e);}
+}
+}
+
+***********************************************************************************
+
+MySQL:
+1.MySQL is widely used relational Database management system(Rdbms)
+2.MySQL is free and open-source.
+3.MySQL is ideal for both small and large application
+
+Jdbc:
+JDBC stands for java datanse connectivity. JDBC is a java API to connect and execute the query with the database. It is a part of JavaSE (Java Standard Edition) JDBC API uses JDBC drivers to connect with the database.
+
+Package:
+import java.sql.*-> It imports all classes from the package java.sql at once
+method used-> doGet() method.
+
+Class.forName()-> It returns the class object associated with the class or interface with the given string name, using the given class loader
+
+DriverManager.getConnection()->It creates a connection object, which is used to create SQL statements, send them to the informic database and process the results.
+
+Prepared Statement()-> It is used to return the object of prepared statement.
+

@@ -1,0 +1,63 @@
+aim: create a servlet application to download a file.
+
+index.html
+<html>
+<head>
+<title>File Download Page</title>
+</head>
+<body>
+<h1>File Download Application</h1>
+Click <a href="DownloadServlet?filename=SampleChapter.pdf">Sample Chapter</a>
+<br/><br/>
+Click <a href="DownloadServlet?filename=TOC.pdf">Table Of Contents</a>
+</body>
+
+DownloadServlet.java
+package filedownloadapp;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+
+public class DownloadServlet extends HttpServlet {
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+
+response.setContentType("APPLICATION/OCTET-STREAM");
+String filename = request.getParameter("filename");
+ServletContext context = getServletContext();
+
+InputStream is = context.getResourceAsStream("/" + filename);
+
+//ServletOutputStream out = response.getOutputStream(); // any of the two works
+PrintWriter out=response.getWriter();
+response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\""); //
+//if comment this statement then it wl ask you about the editor with which you want to open the file
+
+int i;
+
+while ((i=is.read()) != -1) {
+out.write(i);
+}
+is.close();
+out.close();}
+
+    public ServletContext getServletContext() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+}
+
+***********************************************************************************
+Package:
+import Javax.Servlet.ServletOutputStream:
+It provdies an output stream for sending binary data to client servlet and servlet output stream object is normally retrieved by the servletResponse get OutputStream() method.
+This is a abstract class that the servlet container implement subclasses of the class must implement that java.io.Output stream write(int) method
+
+Method:
+getServletContext()->It returns the object of servletContext
+getResouceAsStream()->It returns on Input Stream for the specified resorce or null if it does not find the resource
+setHeader()->It sets a single header value for implicit header.

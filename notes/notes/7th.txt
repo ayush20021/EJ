@@ -1,0 +1,58 @@
+aim: Create a Servlet application to upload
+
+index.html
+<html>
+<body>
+<form action="FileUploadServlet" method="post" enctype="multipart/form-data">
+Select File to Upload:<input type="file" name="file" id="file">
+Destination <input type="text" value="/tmp" name="destination">
+<br>
+<input type="submit" value="Upload file" name="upload" id="upload">
+</form>
+</body>
+</html>
+
+FileUploadServlet.java
+package fileservletapp;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.*;
+@MultipartConfig
+public class FileUploadServlet extends HttpServlet {
+public void doPost(HttpServletRequest req,HttpServletResponse res) throws ServletException,
+IOException
+{
+res.setContentType("text/html");
+PrintWriter out = res.getWriter();
+String path=req.getParameter("destination");
+Part filePart=req.getPart("file");
+String filename=filePart.getSubmittedFileName().toString();
+out.print("<br><br><hr> file name: "+filename);
+OutputStream os=null;
+InputStream is=null;
+try {
+os=new FileOutputStream(new File(path+File.separator+filename));
+is=filePart.getInputStream();
+int read=0;
+while ((read = is.read()) != -1) {
+os.write(read);
+}
+out.println("<br>file uploaded sucessfully...!!!");
+}
+catch(FileNotFoundException e){out.print(e);}
+} }
+
+***********************************************************************************
+Multiport config:
+Multiport config is used to indicated that the servlet on which it is declared expects request to be made using the multiport/form data MIME type.
+
+Package:
+import Javax.Servlet.annotation.multiport config:
+It is used to annote a servlet class in order to handle multiport form-data request and configure various upload settings
+
+Methods
+req.getPort()->It returns collection of all part objects get submitted file name() -> It gets the file name specified by the client
+File.outputstream()-> It is an output stream for writing data streams of raw bytes to file or staring data to file.
+GetInputStream()->It returns and input stream for the given socket.
+doPost()->doPost() method in servlet is used to process the HTTP post requests. It is used to submit the data from the browser to the server for processing The data submitted with post method type is sent in the message body so it in and cannot be seen in the URL.
